@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PDF → HTML → PDF</title>
+</head>
+<body>
+
+<button onclick="processPDF()">Convert PDF</button>
+<div id="output"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<script>
+const fileId = "1QqKsol-gEdW1xP00NIbfJRRgW1H7yV9o";
+const url = `https://drive.google.com/uc?export=download&id=${fileId}`;
+
+async function processPDF() {
+  const pdf = await pdfjsLib.getDocument(url).promise;
+  let htmlContent = "";
+
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const textContent = await page.getTextContent();
+
+    const strings = textContent.items.map(item => item.str);
+    
+    htmlContent += `<div class="page">`;
+    htmlContent += strings.join(" ") + "<br><br>";
+    htmlContent += `</div>`;
+  }
+
+  document.getElementById("output").innerHTML = htmlContent;
+
+  // Convert HTML back to PDF
+  html2pdf().from(document.getElementById("output")).save("converted.pdf");
+}
+</script>
+
+</body>
+</html>

@@ -1,6 +1,5 @@
 # My Bucket List
 
-# 📝 Handwritten Task Sync App (GoodNotes + Web)
 
 ## Overview
 A simple system to manage handwritten tasks from GoodNotes (iPad app) and sync them instantly with a web app.
